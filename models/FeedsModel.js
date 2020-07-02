@@ -11,7 +11,7 @@ const FeedsSchema = new mongoose.Schema(
             required: true
         },
         username: {
-            type: mongoose.Schema.Types.ObjectId,    //instead of String
+            type: String, //mongoose.Schema.Types.ObjectId,    //instead of String
             required: true
         },
         hashtags: {
@@ -20,9 +20,9 @@ const FeedsSchema = new mongoose.Schema(
         image: {
             type: String
         },
-        likes: {
-            type: Array
-        },
+        // likes: {
+        //     type: Array
+        // },
         date: {
             type: Date,
             default: Date.now

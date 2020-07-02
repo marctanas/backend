@@ -23,21 +23,12 @@ router.post(
             'From the user', productData
         );
 
-        // Save the data to database (products collection)
-        const newProductModel = new ProductsModel(productData);
-        newProductModel.save(
-            (err, dbResult) => {
+        // Instantiate the ProductsModel
+        const newProductsModel = ProductsModel(formData);
+        newProductsModel.save();
 
-                // if something goes wrong, send error
-                if(err){
-                    res.send(err)
-                }
-                // Otherwise, send success message
-                else{
-                    res.send('Your POST Products has been received.');
-                }
-            }
-        );
+        res.send('Product has been saved!');
+
     }
     
 );

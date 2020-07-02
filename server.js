@@ -57,12 +57,6 @@ const FeedsRoutes = require('./routes/FeedsRoutes');
 const UsersRoutes = require('./routes/UsersRoutes');
 
 
-//---------
-// Import database models (no longer used as they are in already linked in the router. so delete)
-// const FeedsModel = require('./models/FeedsModel.js');
-// const ProductsModel = require('./models/ProductsModel.js');
-//---------
-
 // Create the server object
 const server = express();
 
@@ -128,43 +122,7 @@ server.get(
     }
 );
 
-//------------
-//the below code was sample to show and will not be needed as it will be done via frontend
-// Create a route for the about page
-// server.get(
-//     '/about',
-//     (req, res)=>{
-//         res.send("<h1> About us</h1>");
-//     }
-// );
 
-// Create a route for the contact page
-// server.get(
-//     '/contact',
-//     (req, res)=>{
-//         res.send(
-//             "<h1> Contact</h1>" +
-//             "<li> name: marc tanas</li>" +
-//             "<li> email: mstanas@hotmail.com</li>" +
-//             "<li> telephone: 76896713</li>" +
-//             "<li> address: Beirut, Lebanon</li>"
-//             );
-
-//     }
-// );
-
-// Create a route for the products page
-// server.get(
-//     '/products',
-//     (req, res)=>{
-//         res.send(
-//             "<h1> Our Products</h1>" +
-//             "<li> iphone x: 15AED</li>" +
-//             "<li> iphone 11: 20AED</li>"
-//             );
-//     }
-// );
-//-----------
 
 // Create a route for the 404 page
 server.get(

@@ -26,19 +26,9 @@ router.post(
 
         // Save the data to database (feeds collection)
         const newFeedModel = new FeedsModel(formData);
-        newFeedModel.save(
-            (err, dbResult) => {
+        newFeedModel.save();
 
-                // if something goes wrong, send error
-                if(err){
-                    res.send(err)
-                }
-                // Otherwise, send success message
-                else{
-                    res.send('Your POST Feeds has been received.');
-                }
-            }
-        );
+        res.send('Your POST has been received.');
 
     }
     
@@ -69,91 +59,91 @@ router.get(
 );
 
 // A POST route for like data into the 'feeds/like' collection
-router.post(
-    '/like',
-    (req, res) => {
+// router.post(
+//     '/like',
+//     (req, res) => {
 
-        // capture username and like data
-        const formData = {
-            text: req.body.text,
-            username: req.body.username,
-            hashtags: req.body.hashtags,
-            image: req.body.image,
-            likes: req.body.likes
-        };
+//         // capture username and like data
+//         const formData = {
+//             text: req.body.text,
+//             username: req.body.username,
+//             hashtags: req.body.hashtags,
+//             image: req.body.image,
+//             likes: req.body.likes
+//         };
 
-        console.log(
-            'From the user', formData
-        );
+//         console.log(
+//             'From the user', formData
+//         );
 
-        //In database, Find username
-        FeedsModel.findOne(
-            {username: formData.username},
-            (err, document) => {
+//         //In database, Find username
+//         FeedsModel.findOne(
+//             {username: formData.username},
+//             (err, document) => {
 
-                //If username already liked, do not updated 
-                if(document.username == formData.likes){
-                    res.send("Username already liked")
-                }
+//                 //If username already liked, do not updated 
+//                 if(document.username == formData.likes){
+//                     res.send("Username already liked")
+//                 }
 
-                //add username to like feed
-                else {
-                    const newLikesArray = new FeedsModel(formData.username)
-                    FeedsModel.updateOne(
-                        {username: formData.username},
-                        {likes: newLikesArray}
-                    );
-                }
-            }
-        )
+//                 //add username to like feed
+//                 else {
+//                     const newLikesArray = new FeedsModel(formData.username)
+//                     FeedsModel.updateOne(
+//                         {username: formData.username},
+//                         {likes: newLikesArray}
+//                     );
+//                 }
+//             }
+//         )
 
 
-        // Save the data to database (feeds collection)
-        const newFeedModel = new FeedsModel(formData);
-        newFeedModel.save(
-            (err, dbResult) => {
+//         // Save the data to database (feeds collection)
+//         const newFeedModel = new FeedsModel(formData);
+//         newFeedModel.save(
+//             (err, dbResult) => {
 
-                // if something goes wrong, send error
-                if(err){
-                    res.send(err)
-                }
-                // Otherwise, send success message
-                else{
-                    res.send('Your POST Like Feeds has been received.');
-                }
-            }
-        );
+//                 // if something goes wrong, send error
+//                 if(err){
+//                     res.send(err)
+//                 }
+//                 // Otherwise, send success message
+//                 else{
+//                     res.send('Your POST Like Feeds has been received.');
+//                 }
+//             }
+//         );
 
-    }
+//     }
     
-);
+// );
 
 
-// A GET route for fetching data from the 'feeds/like' collection
-router.get(
-    '/like',
-    (req, res)=>{
+// // A GET route for fetching data from the 'feeds/like' collection
+// router.get(
+//     '/like',
+//     (req, res)=>{
 
-        // Fetch all the documetns using .find()
-        FeedsModel.find(
-            { id: document.id}
-        )
+//         // Fetch all the documetns using .find()
+//         FeedsModel.find(
+//             { id: document.id}
+//         )
 
-        //Once the results are ready, use .json() to send the results
-        .then(
-            (results) => {
-                //res.json = res.send() + converts to JSON
-                res.json(results)
-            }
-        )
-        .catch(
-            (e) => {
-                console.log('error eccured', e)
-            }
-        )
+//         //Once the results are ready, use .json() to send the results
+//         .then(
+//             (results) => {
+//                 //res.json = res.send() + converts to JSON
+//                 res.json(results)
+//             }
+//         )
+//         .catch(
+//             (e) => {
+//                 console.log('error eccured', e)
+//             }
+//         )
 
-    }
-);
+//     }
+// );
 
 
 // Export the router

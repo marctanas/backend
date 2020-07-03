@@ -11,7 +11,6 @@ router.post(
     '/',
     (req, res) => {
 
-        // read the 'Body' within Post request
         // read the form data
         const formData = {
             text: req.body.text,
@@ -58,92 +57,87 @@ router.get(
     }
 );
 
-// A POST route for like data into the 'feeds/like' collection
-// router.post(
-//     '/like',
-//     (req, res) => {
 
-//         // capture username and like data
-//         const formData = {
-//             text: req.body.text,
-//             username: req.body.username,
-//             hashtags: req.body.hashtags,
-//             image: req.body.image,
-//             likes: req.body.likes
-//         };
+// A POST route for like data data into the 'feeds' collection without using passport.authenticate
+router.post(
+    '/like',
+    (req, res) => {
+        
+        // Read the form data
+        const formData = {
+            text: req.body.text,
+            username: req.body.username,
+            hashtags: req.body.hashtags,
+            image: req.body.image,
+            likes: req.body.likes
+        };
 
-//         console.log(
-//             'From the user', formData
-//         );
+        // console.log('From the user', formData); 
 
-//         //In database, Find username
-//         FeedsModel.findOne(
-//             {username: formData.username},
-//             (err, document) => {
+                
+        // Find user in database
+        FeedsModel.findOne(
+            {username: formData.username},
+            (err, document) => {
+                
+                //If username is not there, alert 
+                if(!document){
+                    res.send("Username is not on database")
+                }
 
-//                 //If username already liked, do not updated 
-//                 if(document.username == formData.likes){
-//                     res.send("Username already liked")
-//                 }
+                //If the username already on database, examine the document( the formData - likes)
+                else {
 
-//                 //add username to like feed
-//                 else {
-//                     const newLikesArray = new FeedsModel(formData.username)
-//                     FeedsModel.updateOne(
-//                         {username: formData.username},
-//                         {likes: newLikesArray}
-//                     );
-//                 }
-//             }
-//         )
+                    //get the object id of the user.
+                    const newLikesArray = document._id;
 
+                    //counter to search the id in likes
+                    let counter = 0;
+                    
+                    //if id not yet liked to add
+                    let notLiked = 1;
+                                            
+                    // console.log(newLikesArray);
+                    // console.log(formData.likes);
+                
+                    for(counter = 0; counter < formData.likes.length; counter++){
+                        if(formData.likes[counter] == newLikesArray){
+                            formData.likes.splice(counter, 1) ;
 
-//         // Save the data to database (feeds collection)
-//         const newFeedModel = new FeedsModel(formData);
-//         newFeedModel.save(
-//             (err, dbResult) => {
+                            // console.log('The id already liked and will be removed' , formData.likes );
 
-//                 // if something goes wrong, send error
-//                 if(err){
-//                     res.send(err)
-//                 }
-//                 // Otherwise, send success message
-//                 else{
-//                     res.send('Your POST Like Feeds has been received.');
-//                 }
-//             }
-//         );
+                            notLiked = notLiked - 1;
+                        } 
+                        else{}
+                    }
 
-//     }
+                    if(notLiked = 1){
+                        //update the like with user ID
+                        FeedsModel.updateOne(
+                            {username: formData.username},
+                            {$push:{likes: newLikesArray}},  //there is issue not adding to likes array
+
+                            console.log(formData.username),
+                            console.log(newLikesArray),
+                            console.log('the id will be added to the liked array' , formData.likes)
+                        );   
+                    }
+                    else{}
+                }
+                             
+                // Save the data to database (feeds collection)
+                const newFeedModel = new FeedsModel(formData);
+
+                newFeedModel.save();
+                res.send('Your LIKE POST has been received.');
+
+            }
+            
+        )
+
+    }
     
-// );
-
-
-// // A GET route for fetching data from the 'feeds/like' collection
-// router.get(
-//     '/like',
-//     (req, res)=>{
-
-//         // Fetch all the documetns using .find()
-//         FeedsModel.find(
-//             { id: document.id}
-//         )
-
-//         //Once the results are ready, use .json() to send the results
-//         .then(
-//             (results) => {
-//                 //res.json = res.send() + converts to JSON
-//                 res.json(results)
-//             }
-//         )
-//         .catch(
-//             (e) => {
-//                 console.log('error eccured', e)
-//             }
-//         )
-
-//     }
-// );
+);
 
 
 // Export the router

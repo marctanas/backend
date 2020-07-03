@@ -99,7 +99,7 @@ server.use(
 // link our FeedsRoutes
 server.use(
     '/feeds', // http://localhost:8080/feeds
-    passport.authenticate('jwt', {session:false}),   //authenticate user in order to proceed to feeds - use passport-jwt
+  //  passport.authenticate('jwt', {session:false}),   //authenticate user in order to proceed to feeds - use passport-jwt
     FeedsRoutes
 );
 

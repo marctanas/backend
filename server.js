@@ -13,6 +13,9 @@ const passport = require('passport');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 
+// Import cors
+const cors = require('cors');
+
 // The same secret in routes/UsersRoutes will be needed to read the jsonwebtoken
 const secret = "s3cr3t100";
 
@@ -55,6 +58,7 @@ const passportJwt = (passport) => {
 const ProductsRoutes = require('./routes/ProductsRoutes');
 const FeedsRoutes = require('./routes/FeedsRoutes');
 const UsersRoutes = require('./routes/UsersRoutes');
+const EmailsRoutes = require('./routes/EmailsRoutes');
 
 
 // Create the server object
@@ -64,6 +68,7 @@ const server = express();
 server.use(bodyParser.urlencoded({ extended: false }));
 server.use(bodyParser.json());
 server.use(passport.initialize());
+server.use(cors());
 
 // Invoke passportJwt and pass the passport package as argument
 passportJwt(passport);
@@ -99,7 +104,7 @@ server.use(
 // link our FeedsRoutes
 server.use(
     '/feeds', // http://localhost:8080/feeds
-  //  passport.authenticate('jwt', {session:false}),   //authenticate user in order to proceed to feeds - use passport-jwt
+    passport.authenticate('jwt', {session:false}),   //authenticate user in order to proceed to feeds - use passport-jwt
     FeedsRoutes
 );
 
@@ -107,6 +112,11 @@ server.use(
 server.use(
     '/users', // http://localhost:8080/users
     UsersRoutes
+);
+
+server.use(
+    '/emails', // http://localhost:8080/emails
+    EmailsRoutes
 );
 
 // Create a route for the landing page

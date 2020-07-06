@@ -10,8 +10,11 @@ const FeedsSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        loggedId: {
+            type: mongoose.Schema.Types.ObjectId,
+        },
         username: {
-            type: String, //mongoose.Schema.Types.ObjectId,
+            type: String,
             required: true
         },
         hashtags: {
@@ -20,9 +23,7 @@ const FeedsSchema = new mongoose.Schema(
         image: {
             type: String
         },
-        likes: {
-            type: Array
-        },
+        likes: [String],
         date: {
             type: Date,
             default: Date.now

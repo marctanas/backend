@@ -14,7 +14,7 @@ router.post(
         }
 
         // Instantiate the EmailsModel
-        const newEmailsModel = EmailsModel(formData);
+        const newEmailsModel = new EmailsModel(formData);
         newEmailsModel.save();
 
         res.json({message:'Email has been saved!'});

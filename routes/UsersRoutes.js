@@ -128,7 +128,7 @@ router.post(
 
                             //Step 5b. If password does not match, reject login request
                             else {
-                                res.send("Please check email or password")
+                                res.json({message:"Please check email or password"})
                             }
                         }
                     )

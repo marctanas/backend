@@ -53,7 +53,7 @@ router.post(
                                 
                                 // Otherwise, send success message
                                 else{
-                                    res.json({message: 'Your POST Register User has been received and saved'});
+                                    res.json({message: 'User has been saved'});
                                 }
                             }
                         );

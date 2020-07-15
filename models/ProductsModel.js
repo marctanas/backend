@@ -1,13 +1,18 @@
-// Import mongoose
+// Import mongoose 
 const mongoose = require('mongoose');
 
-// creating the Schema for what kind of collection will be saved in the DB
-// class contructor
+// Schema
 const ProductsSchema = new mongoose.Schema(
     {
         brand: {
             type: String,
             required: true
+        },
+        description: {
+            type: String,
+        },
+        image: {
+            type: String,
         },
         model: {
             type: String,
@@ -24,8 +29,6 @@ const ProductsSchema = new mongoose.Schema(
     }
 );
 
-//model out of the schema
+// Model
 const ProductsModel = mongoose.model('products', ProductsSchema);
-
-//to export to MongoDB
 module.exports = ProductsModel;

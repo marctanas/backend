@@ -1,36 +1,29 @@
 // Import express into the file
 const express = require('express');
-// invoke the router()
 const router = express.Router();
-// import the ProductsModel
 const ProductsModel = require('../models/ProductsModel');
 
 
-// A POST route for creating product
+// POST route for creating product
 router.post(
-    '/',   // http://localhost:8080/products
-    (req, res) => {
-
-        // read the product data
-        const productData = {
+    '/',
+    (req, res)=>{
+        // Capture the form data
+        const formData = {
             brand: req.body.brand,
             model: req.body.model,
             price: req.body.price,
-            qty: req.body.qty
-        };
-
-        console.log(
-            'From the user', productData
-        );
+            qty: req.body.qty,
+            image: req.body.image,
+            description: req.body.description
+        }
 
         // Instantiate the ProductsModel
         const newProductsModel = ProductsModel(formData);
         newProductsModel.save();
 
         res.send('Product has been saved!');
-
     }
-    
 );
 
 
@@ -45,9 +38,9 @@ router.post(
 
         ProductsModel
         .findOneAndUpdate(
-            {_id: formData._id},  // search criteria
-            {qty: formData.qty},  // the keys & values to update
-            {}, //options (if any)
+            { _id: formData._id }, // search criteria
+            { qty: formData.qty }, // the keys & values to update
+            {}, // options (if any)
             (err, document) => {
 
                 if(err) {
@@ -55,17 +48,39 @@ router.post(
                 } else {
                     res.json(
                         {
-                            message: 'product updated',
+                            message: 'Product updated',
                             document: document
                         }
                     )
                 }
-
             }
         )
+    }
+);
+
+// A GET route for fetching data from the 'feeds' collection
+router.get(
+    '/',
+    (req, res)=>{
+
+        // (1) Fetch all the documents using .find()
+        ProductsModel.find()
+
+        // (2) Once the results are ready, use .json() to send the results
+        .then(
+            (results) => {
+                // res.json = res.send() + converts to JSON
+                res.json({products: results})
+            }
+        )
+        .catch( 
+            (e)=> {
+                console.log('error occured', e)
+            }
+        );
 
     }
-)
+);
 
 // Export the router
 module.exports = router;

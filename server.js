@@ -1,12 +1,9 @@
 // Importing express inside your server
-const express = require ('express');
-
-// Import mongoose insider server
+const express = require('express');
+// Import mongoose inside server
 const mongoose = require('mongoose');
-
-//Import body-parser
+// Import body-parser
 const bodyParser = require('body-parser');
-
 // Import passport
 const passport = require('passport');
 // Import the strategies & way to extract the jsonwebtoken
@@ -16,7 +13,8 @@ const ExtractJwt = require('passport-jwt').ExtractJwt;
 // Import cors
 const cors = require('cors');
 
-// The same secret in routes/UsersRoutes will be needed to read the jsonwebtoken
+// The same secret in routes/UsersRoutes will be needed
+// to read the jsonwebtoken
 const secret = "s3cr3t100";
 
 // We need the UsersModel to find the user in the database
@@ -32,15 +30,15 @@ const passportJwtOptions = {
 const passportJwt = (passport) => {
     passport.use(
         new JwtStrategy(
-            passportJwtOptions,
+            passportJwtOptions, 
             (jwtPayload, done) => {
 
                 // Extract and find the user by their id (contained jwt)
-                UsersModel.findOne({ _id: jwtPayload.id})
+                UsersModel.findOne({ _id: jwtPayload.id })
                 .then(
                     // If the document was found
                     (document) => {
-                        return done(null, document)
+                        return done(null, document);
                     }
                 )
                 .catch(
@@ -54,12 +52,11 @@ const passportJwt = (passport) => {
     )
 };
 
-// Import routes
+// Import routes 
 const ProductsRoutes = require('./routes/ProductsRoutes');
 const FeedsRoutes = require('./routes/FeedsRoutes');
 const UsersRoutes = require('./routes/UsersRoutes');
 const EmailsRoutes = require('./routes/EmailsRoutes');
-
 
 // Create the server object
 const server = express();
@@ -70,11 +67,10 @@ server.use(bodyParser.json());
 server.use(passport.initialize());
 server.use(cors());
 
-// Invoke passportJwt and pass the passport package as argument
+// Invoke passportJwt and pass the passport npm package as argument
 passportJwt(passport);
 
-
-//Enter database connection URL from mongoDB
+// Enter your database connection URL
 const dbURL = "mongodb+srv://admin01:pass123@cluster0-on0ly.mongodb.net/test?retryWrites=true&w=majority";
 
 mongoose.connect(
@@ -83,10 +79,9 @@ mongoose.connect(
         'useNewUrlParser': true,
         'useUnifiedTopology': true
     }
-
 ).then(
     ()=>{
-        console.log('You are connected to MongoDB');
+        console.log('You are connected MongoDB');
     }
 ).catch(
     (e)=>{
@@ -94,60 +89,49 @@ mongoose.connect(
     }
 );
 
-// link our ProductsRoutes
 server.use(
-    '/products', // http://localhost:8080/products
-    passport.authenticate('jwt', {session:false}),   //authenticate user in order to proceed to products - use passport-jwt
+    '/products',
+    //passport.authenticate('jwt', {session:false}), // Use passport-jwt to authenticate
     ProductsRoutes
 );
 
-// link our FeedsRoutes
 server.use(
-    '/feeds', // http://localhost:8080/feeds
-    passport.authenticate('jwt', {session:false}),   //authenticate user in order to proceed to feeds - use passport-jwt
+    '/feeds',
+    passport.authenticate('jwt', {session:false}), // Use passport-jwt to authenticate
     FeedsRoutes
 );
 
-// link our UsersRoutes
 server.use(
-    '/users', // http://localhost:8080/users
+    '/users', 
     UsersRoutes
 );
 
 server.use(
-    '/emails', // http://localhost:8080/emails
+    '/emails', 
     EmailsRoutes
 );
 
 // Create a route for the landing page
 server.get(
     '/',
-    (req, res)=>{
+    (req, res) => {
         res.send(
-            "<h1> Welcome to somewebsite.com</h1>" +
-            "<a href='/about'>About</a>" + " " +
-            "<a href='/contact'>Contact</a>" + " " +
-            "<a href='/products'>Products</a>"
-        );
-    }
-);
-
-
-
-// Create a route for the 404 page
-server.get(
-    '*',
-    (req, res)=>{
-        res.send(
-            "<h1> 404! Page not Found</h1>"
+            "<h1>Welcome to MyCars.com</h1>" +
+            "<a href='/about'>About</a>"
             );
     }
 );
 
+// Route for 404
+server.get('*', (req, res)=> {
+    res.send('404! Page not found :(')
+});
+
+
 // Connect to port (range 3000 - 9999)
-// http://127.0.0.1:8080 (aka http://localhost:8080)  this is on local machine
+// http://127.0.0.1:8080 (aka http://localhost:8080)
 server.listen( 
     8080, ()=>{
-        console.log('You are connected to Localhost http://127.0.0.1:8080');
+        console.log('You are connected http://127.0.0.1:8080!');
     }
-)
+);

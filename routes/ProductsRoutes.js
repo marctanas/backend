@@ -6,7 +6,7 @@ const router = express.Router();
 const ProductsModel = require('../models/ProductsModel');
 
 
-// A POST route for saving data into the 'products' collection
+// A POST route for creating product
 router.post(
     '/',   // http://localhost:8080/products
     (req, res) => {
@@ -32,6 +32,40 @@ router.post(
     }
     
 );
+
+
+// POST route to update product
+router.post(
+    '/update',
+    (req, res) => {
+        const formData = {
+            qty: req.body.qty,
+            _id: req.body._id
+        };
+
+        ProductsModel
+        .findOneAndUpdate(
+            {_id: formData._id},  // search criteria
+            {qty: formData.qty},  // the keys & values to update
+            {}, //options (if any)
+            (err, document) => {
+
+                if(err) {
+                    console.log(err);
+                } else {
+                    res.json(
+                        {
+                            message: 'product updated',
+                            document: document
+                        }
+                    )
+                }
+
+            }
+        )
+
+    }
+)
 
 // Export the router
 module.exports = router;

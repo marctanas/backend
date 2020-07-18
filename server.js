@@ -4,6 +4,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 // Import body-parser
 const bodyParser = require('body-parser');
+
+// Import dotenv
+require('dotenv').config()
+
 // Import passport
 const passport = require('passport');
 // Import the strategies & way to extract the jsonwebtoken
@@ -15,7 +19,7 @@ const cors = require('cors');
 
 // The same secret in routes/UsersRoutes will be needed
 // to read the jsonwebtoken
-const secret = "s3cr3t100";
+const secret = process.env.SECRET;
 
 // We need the UsersModel to find the user in the database
 const UsersModel = require('./models/UsersModel');
@@ -71,7 +75,7 @@ server.use(cors());
 passportJwt(passport);
 
 // Enter your database connection URL
-const dbURL = "mongodb+srv://admin01:pass123@cluster0-on0ly.mongodb.net/test?retryWrites=true&w=majority";
+const dbURL = process.env.DB_URL;
 
 mongoose.connect(
     dbURL,

@@ -3,9 +3,9 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 // invoke the router()
 const router = express.Router();
-
 const jwt = require('jsonwebtoken');
-const secret = "s3cr3t100";
+require('dotenv').config()
+const secret = process.env.SECRET;
 
 // import the UsersModel
 const UsersModel = require('../models/UsersModel');

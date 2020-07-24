@@ -6,9 +6,11 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 require('dotenv').config()
 const secret = process.env.SECRET;
+const cloudinary = require('cloudinary');
 
 // import the UsersModel
 const UsersModel = require('../models/UsersModel');
+const { route } = require('./ProductsRoutes');
 
 
 // /register
@@ -138,6 +140,23 @@ router.post(
         
     }
 );
+
+router.post(
+    '/image-upload',
+    (req, res)=> {
+        const files = Object.values(req.files);
+
+        cloudinary.uploader.upload(
+            files[0].path, 
+            function(error, result) {
+                console.log(result, error)
+            }
+        );
+
+        res.json({message: files})
+    }
+)
+
 
 // Export the router
 module.exports = router;

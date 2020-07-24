@@ -60,6 +60,10 @@ A state that any component anywhere can access.
 This allows navigating between components with a change of the URL
 
 
+// API (Application Programming Interface)
+Rules for communicating with a server
+
+
 -------------
 // Client
 A server sending requests (browser, postman, cURL, etc.)

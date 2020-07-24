@@ -17,6 +17,18 @@ const ExtractJwt = require('passport-jwt').ExtractJwt;
 // Import cors
 const cors = require('cors');
 
+// import express-form-data (for file)
+const expressFormData = require('express-form-data');
+
+// import cloudinary
+const cloudinary = require('cloudinary');
+
+cloudinary.config({ 
+    cloud_name: process.env.CLOUDINARY_CLOUD, 
+    api_key: process.env.API_KEY, 
+    api_secret: process.env.API_SECRET 
+  });
+
 // The same secret in routes/UsersRoutes will be needed
 // to read the jsonwebtoken
 const secret = process.env.SECRET;
@@ -70,6 +82,7 @@ server.use(bodyParser.urlencoded({ extended: false }));
 server.use(bodyParser.json());
 server.use(passport.initialize());
 server.use(cors());
+server.use(expressFormData.parse());
 
 // Invoke passportJwt and pass the passport npm package as argument
 passportJwt(passport);
